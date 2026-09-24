@@ -1,0 +1,4557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>OJT Accomplishment Tracker</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+<!-- =========================================================
+     LOGIN PAGE
+========================================================= -->
+
+<div id="loginPage" class="page">
+
+    <div class="auth-container">
+
+        <div class="auth-card">
+
+            <div class="auth-logo">
+                <img src="nextg/nextg.png">
+            </div>
+
+            <h1>OJT Accomplishment Tracker</h1>
+
+            <p class="auth-subtitle">
+                Securely record and monitor your OJT accomplishments.
+            </p>
+
+            <form id="loginForm">
+
+                <div class="form-group">
+                    <label for="loginUsername">
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="loginUsername"
+                        placeholder="Enter username"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="loginPassword">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="loginPassword"
+                        placeholder="Enter password"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Account Type
+                    </label>
+
+                    <select id="loginRole">
+
+                        <option value="ojt">
+                            OJT
+                        </option>
+
+                        <option value="admin">
+                            Admin
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Login
+                </button>
+
+            </form>
+
+            <div id="loginMessage"
+                 class="message">
+            </div>
+
+            <p class="auth-switch">
+                Don't have an OJT account?
+
+                <button
+                    type="button"
+                    onclick="showRegisterPage()"
+                >
+                    Register
+                </button>
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     REGISTRATION PAGE
+========================================================= -->
+
+<div id="registerPage"
+     class="page hidden">
+
+    <div class="auth-container">
+
+        <div class="auth-card">
+
+            <div class="auth-logo">
+                <img src="nextg/nextg.png">
+            </div>
+
+            <h1>Create OJT Account</h1>
+
+            <p class="auth-subtitle">
+                Register your OJT account.
+            </p>
+
+            <form id="registerForm">
+
+                <div class="form-group">
+
+                    <label for="registerFullName">
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="registerFullName"
+                        placeholder="Enter your full name"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="registerSchool">
+                        School
+                    </label>
+
+                    <input
+                        type="text"
+                        id="registerSchool"
+                        placeholder="Enter your school"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="registerUsername">
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="registerUsername"
+                        placeholder="Create a username"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="registerPassword">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="registerPassword"
+                        placeholder="Create a password"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="registerConfirmPassword">
+                        Confirm Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="registerConfirmPassword"
+                        placeholder="Confirm your password"
+                        required
+                    >
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Create Account
+                </button>
+
+            </form>
+
+            <div id="registerMessage"
+                 class="message">
+            </div>
+
+            <p class="auth-switch">
+
+                Already have an account?
+
+                <button
+                    type="button"
+                    onclick="showLoginPage()"
+                >
+                    Login
+                </button>
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     OJT DASHBOARD
+========================================================= -->
+
+<div id="ojtDashboard"
+     class="dashboard hidden">
+
+    <nav class="navbar">
+
+        <div class="nav-brand">
+
+            <span class="nav-icon">
+                <img src="nextg/nextg.png">
+            </span>
+
+            <div>
+                <strong>
+                    OJT Tracker
+                </strong>
+
+                <small>
+                    Accomplishment System
+                </small>
+            </div>
+
+        </div>
+
+        <div class="nav-right">
+
+            <span id="ojtNavName">
+                OJT
+            </span>
+
+            <button
+                class="logout-button"
+                onclick="logout()"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </nav>
+
+
+    <main class="dashboard-container">
+
+        <!-- HERO -->
+
+        <section class="dashboard-hero">
+
+            <div>
+
+                <small>
+                    OJT DASHBOARD
+                </small>
+
+                <h1>
+                    Welcome,
+                    <span id="ojtWelcomeName">
+                        OJT
+                    </span>
+                </h1>
+
+                <p>
+                    Submit, edit, view, and download your
+                    accomplishment reports.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- PROFILE -->
+
+        <div class="card">
+
+            <div class="card-title">
+
+                <small>
+                    ACCOUNT INFORMATION
+                </small>
+
+                <h2>
+                    OJT Profile
+                </h2>
+
+            </div>
+
+            <div class="profile-grid">
+
+                <div class="profile-item">
+
+                    <span>
+                        Full Name
+                    </span>
+
+                    <strong id="ojtProfileName">
+                        -
+                    </strong>
+
+                </div>
+
+                <div class="profile-item">
+
+                    <span>
+                        School
+                    </span>
+
+                    <strong id="ojtProfileSchool">
+                        -
+                    </strong>
+
+                </div>
+
+                <div class="profile-item">
+
+                    <span>
+                        Username
+                    </span>
+
+                    <strong id="ojtProfileUsername">
+                        -
+                    </strong>
+
+                </div>
+
+                <div class="profile-item">
+
+                    <span>
+                        Account Type
+                    </span>
+
+                    <strong>
+                        OJT
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SUBMISSION -->
+
+        <div class="card">
+
+            <div class="card-title">
+
+                <small>
+                    DAILY ACCOMPLISHMENT
+                </small>
+
+                <h2>
+                    Submit Accomplishment
+                </h2>
+
+            </div>
+
+
+            <form id="accomplishmentForm">
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="accomplishmentDate">
+                            Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="accomplishmentDate"
+                            required
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="accomplishmentPeriod">
+                            Session
+                        </label>
+
+                        <select
+                            id="accomplishmentPeriod"
+                            required
+                        >
+
+                            <option value="am">
+                                AM Session
+                            </option>
+
+                            <option value="pm">
+                                PM Session
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="accomplishmentDescription">
+                        Accomplishment Description
+                    </label>
+
+                    <textarea
+                        id="accomplishmentDescription"
+                        rows="6"
+                        placeholder="Describe what you accomplished during this session..."
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="accomplishmentPhoto">
+                        Proof Photo
+                    </label>
+
+                    <input
+                        type="file"
+                        id="accomplishmentPhoto"
+                        accept="image/*"
+                        required
+                    >
+
+                    <small class="input-note">
+                        Upload an image as proof of your accomplishment.
+                    </small>
+
+                </div>
+
+
+                <div id="photoPreview"
+                     class="photo-preview hidden">
+
+                    <img
+                        id="previewImage"
+                        src=""
+                        alt="Photo preview"
+                    >
+
+                    <button
+                        type="button"
+                        onclick="removePhoto()"
+                        class="remove-photo-button"
+                    >
+                        Remove Photo
+                    </button>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Submit Accomplishment
+                </button>
+
+            </form>
+
+            <div id="submissionMessage"
+                 class="message">
+            </div>
+
+        </div>
+
+
+        <!-- RECENT HISTORY -->
+
+        <div class="card history-card">
+
+            <div class="card-title">
+
+                <small>
+                    RECENT RECORDS
+                </small>
+
+                <h2>
+                    Recent Submission History
+                </h2>
+
+            </div>
+
+            <div id="historyContainer">
+
+                <div class="loading">
+                    Loading history...
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ALL REPORTS -->
+
+        <div class="card reports-card">
+
+            <div class="card-title">
+
+                <small>
+                    COMPLETE RECORDS
+                </small>
+
+                <h2>
+                    All Accomplishment Reports
+                </h2>
+
+            </div>
+
+
+            <div class="reports-toolbar">
+
+                <input
+                    type="date"
+                    id="ojtReportDateFilter"
+                >
+
+                <button
+                    type="button"
+                    class="report-button"
+                    onclick="loadAllOJTReports()"
+                >
+                    View Reports
+                </button>
+
+                <button
+                    type="button"
+                    class="report-clear"
+                    onclick="clearOJTReportFilter()"
+                >
+                    Clear
+                </button>
+
+            </div>
+
+
+            <div id="ojtReportCount"
+                 class="report-count">
+            </div>
+
+
+            <div id="ojtReportsContainer">
+
+                <div class="report-loading">
+                    Loading all accomplishment reports...
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     ADMIN DASHBOARD
+========================================================= -->
+
+<div id="adminDashboard"
+     class="dashboard hidden">
+
+    <nav class="navbar">
+
+        <div class="nav-brand">
+
+            <span class="nav-icon">
+                <img src="nextg/nextg.png">
+            </span>
+
+            <div>
+
+                <strong>
+                    OJT Tracker
+                </strong>
+
+                <small>
+                    Administrator
+                </small>
+
+            </div>
+
+        </div>
+
+        <div class="nav-right">
+
+            <span>
+                Administrator
+            </span>
+
+            <button
+                class="logout-button"
+                onclick="logout()"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </nav>
+
+
+    <main class="dashboard-container">
+
+        <!-- ADMIN HERO -->
+
+        <section class="dashboard-hero admin-hero">
+
+            <div>
+
+                <small>
+                    ADMIN DASHBOARD
+                </small>
+
+                <h1>
+                    OJT Accomplishment Monitoring
+                </h1>
+
+                <p>
+                    View and monitor submitted accomplishment reports.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- CALENDAR -->
+
+        <div class="card">
+
+            <div class="card-title">
+
+                <small>
+                    MONTHLY MONITORING
+                </small>
+
+                <h2>
+                    Accomplishment Calendar
+                </h2>
+
+            </div>
+
+
+            <div class="calendar-header">
+
+                <button
+                    type="button"
+                    onclick="changeMonth(-1)"
+                    class="calendar-button"
+                >
+                    ‹
+                </button>
+
+                <strong id="calendarMonth">
+                    -
+                </strong>
+
+                <button
+                    type="button"
+                    onclick="changeMonth(1)"
+                    class="calendar-button"
+                >
+                    ›
+                </button>
+
+            </div>
+
+
+            <div class="calendar-weekdays">
+
+                <div>Sun</div>
+                <div>Mon</div>
+                <div>Tue</div>
+                <div>Wed</div>
+                <div>Thu</div>
+                <div>Fri</div>
+                <div>Sat</div>
+
+            </div>
+
+
+            <div
+                id="calendarGrid"
+                class="calendar-grid"
+            >
+            </div>
+
+        </div>
+
+
+        <!-- DAILY RECORDS -->
+
+        <div class="card">
+
+            <div class="card-title">
+
+                <small>
+                    DAILY RECORDS
+                </small>
+
+                <h2 id="selectedDateTitle">
+                    Select a date
+                </h2>
+
+            </div>
+
+
+            <div id="adminRecordsContainer">
+
+                <div class="empty-state">
+                    Select a date from the calendar.
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ALL REPORTS -->
+
+        <div class="card reports-card">
+
+            <div class="card-title">
+
+                <small>
+                    COMPLETE RECORDS
+                </small>
+
+                <h2>
+                    All Accomplishment Reports
+                </h2>
+
+            </div>
+
+
+            <div class="reports-toolbar">
+
+                <input
+                    type="text"
+                    id="adminReportSearch"
+                    placeholder="Search OJT name, username, or school..."
+                    oninput="loadAllAdminReports()"
+                >
+
+                <input
+                    type="date"
+                    id="adminReportDate"
+                    onchange="loadAllAdminReports()"
+                >
+
+                <select
+                    id="adminReportPeriod"
+                    onchange="loadAllAdminReports()"
+                >
+
+                    <option value="">
+                        All Sessions
+                    </option>
+
+                    <option value="am">
+                        AM Session
+                    </option>
+
+                    <option value="pm">
+                        PM Session
+                    </option>
+
+                </select>
+
+                <button
+                    type="button"
+                    class="report-button"
+                    onclick="loadAllAdminReports()"
+                >
+                    Refresh
+                </button>
+
+                <button
+                    type="button"
+                    class="report-clear"
+                    onclick="clearAdminReportFilters()"
+                >
+                    Clear
+                </button>
+
+            </div>
+
+
+            <div
+                id="adminReportCount"
+                class="report-count"
+            >
+            </div>
+
+
+            <div id="adminReportsContainer">
+
+                <div class="report-loading">
+                    Loading all accomplishment reports...
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- EDIT HISTORY -->
+
+        <div class="card reports-card">
+
+            <div class="card-title">
+
+                <small>
+                    AUDIT TRAIL
+                </small>
+
+                <h2>
+                    Accomplishment Edit History
+                </h2>
+
+            </div>
+
+
+            <div class="reports-toolbar">
+
+                <input
+                    type="text"
+                    id="adminEditSearch"
+                    placeholder="Search OJT name, username, or school..."
+                    oninput="loadAdminEditHistory()"
+                >
+
+                <button
+                    type="button"
+                    class="report-button"
+                    onclick="loadAdminEditHistory()"
+                >
+                    Refresh
+                </button>
+
+            </div>
+
+
+            <div
+                id="adminEditHistoryCount"
+                class="report-count"
+            >
+            </div>
+
+
+            <div id="adminEditHistoryContainer">
+
+                <div class="report-loading">
+                    Loading edit history...
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     EDIT ACCOMPLISHMENT MODAL
+========================================================= -->
+
+<div
+    id="editAccomplishmentModal"
+    class="edit-modal"
+>
+
+    <div class="edit-modal-content">
+
+        <div class="edit-modal-header">
+
+            <div>
+
+                <small>
+                    EDIT ACCOMPLISHMENT
+                </small>
+
+                <h2>
+                    Edit Entry
+                </h2>
+
+            </div>
+
+            <button
+                type="button"
+                class="edit-modal-close"
+                onclick="closeEditAccomplishment()"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <input
+            type="hidden"
+            id="editAccomplishmentId"
+        >
+
+
+        <div class="edit-info">
+
+            <strong id="editAccomplishmentDate">
+                -
+            </strong>
+
+            <span id="editAccomplishmentPeriod">
+                -
+            </span>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="editDescription">
+                Accomplishment Description
+            </label>
+
+            <textarea
+                id="editDescription"
+                rows="6"
+                placeholder="Enter your accomplishment..."
+            ></textarea>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Current Proof Photo
+            </label>
+
+            <div id="editCurrentPhoto">
+            </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="editPhoto">
+                Replace Photo
+            </label>
+
+            <input
+                type="file"
+                id="editPhoto"
+                accept="image/*"
+            >
+
+            <small class="edit-photo-note">
+                Leave this empty if you want to keep the current photo.
+            </small>
+
+        </div>
+
+
+        <div
+            id="editMessage"
+            class="message"
+        >
+        </div>
+
+
+        <div class="edit-modal-actions">
+
+            <button
+                type="button"
+                class="report-clear"
+                onclick="closeEditAccomplishment()"
+            >
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                class="report-button"
+                onclick="saveEditedAccomplishment()"
+            >
+                Save Changes
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+/* =========================================================
+   SUPABASE CONFIGURATION
+========================================================= */
+
+const SUPABASE_URL =
+    "https://mohoklsymendqxvngqja.supabase.co";
+
+
+const SUPABASE_KEY =
+    "sb_publishable_Sf0Lcv8rx8A5n6ocj9jk8Q_EG-MuYXg";
+
+
+const supabaseClient =
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/* =========================================================
+   GLOBAL VARIABLES
+========================================================= */
+
+let currentUser = null;
+let currentProfile = null;
+
+let selectedAdminDate =
+    new Date();
+
+let calendarMonth =
+    new Date();
+
+
+/* =========================================================
+   PAGE HELPERS
+========================================================= */
+
+function showLoginPage() {
+
+    document
+        .getElementById("loginPage")
+        .classList.remove("hidden");
+
+    document
+        .getElementById("registerPage")
+        .classList.add("hidden");
+
+    document
+        .getElementById("ojtDashboard")
+        .classList.add("hidden");
+
+    document
+        .getElementById("adminDashboard")
+        .classList.add("hidden");
+}
+
+
+function showRegisterPage() {
+
+    document
+        .getElementById("loginPage")
+        .classList.add("hidden");
+
+    document
+        .getElementById("registerPage")
+        .classList.remove("hidden");
+
+    document
+        .getElementById("ojtDashboard")
+        .classList.add("hidden");
+
+    document
+        .getElementById("adminDashboard")
+        .classList.add("hidden");
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+function showMessage(
+    message,
+    type = "success",
+    elementId = null
+) {
+
+    let element;
+
+    if (elementId) {
+
+        element =
+            document.getElementById(elementId);
+
+    } else {
+
+        element =
+            document.getElementById("submissionMessage");
+
+    }
+
+    if (!element) return;
+
+    element.textContent = message;
+
+    element.className =
+        "message " + type;
+
+    setTimeout(() => {
+
+        element.textContent = "";
+        element.className = "message";
+
+    }, 5000);
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(value) {
+
+    if (value === null || value === undefined) {
+        return "";
+    }
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* =========================================================
+   USERNAME TO INTERNAL EMAIL
+========================================================= */
+
+function usernameToEmail(username) {
+
+    return (
+        username
+            .trim()
+            .toLowerCase()
+            .replace(/[^a-z0-9._-]/g, "")
+        + "@ojttracker.local"
+    );
+}
+
+
+/* =========================================================
+   GET PROFILE
+========================================================= */
+
+async function getProfile(userId) {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("profiles")
+        .select("*")
+        .eq("id", userId)
+        .single();
+
+    if (error) {
+
+        console.error(
+            "Profile error:",
+            error
+        );
+
+        return null;
+    }
+
+    return data;
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+document
+    .getElementById("loginForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+            const username =
+                document
+                    .getElementById("loginUsername")
+                    .value
+                    .trim();
+
+            const password =
+                document
+                    .getElementById("loginPassword")
+                    .value;
+
+            const selectedRole =
+                document
+                    .getElementById("loginRole")
+                    .value;
+
+
+            if (!username || !password) {
+
+                showMessage(
+                    "Please enter your username and password.",
+                    "error",
+                    "loginMessage"
+                );
+
+                return;
+            }
+
+
+            showMessage(
+                "Logging in...",
+                "success",
+                "loginMessage"
+            );
+
+
+            const email =
+                usernameToEmail(username);
+
+
+            const {
+                data,
+                error
+            } = await supabaseClient.auth
+                .signInWithPassword({
+                    email: email,
+                    password: password
+                });
+
+
+            if (error) {
+
+                console.error(error);
+
+                showMessage(
+                    "Invalid username or password.",
+                    "error",
+                    "loginMessage"
+                );
+
+                return;
+            }
+
+
+            currentUser =
+                data.user;
+
+
+            currentProfile =
+                await getProfile(
+                    currentUser.id
+                );
+
+
+            if (!currentProfile) {
+
+                await supabaseClient.auth
+                    .signOut();
+
+                currentUser = null;
+
+                showMessage(
+                    "Your profile could not be found.",
+                    "error",
+                    "loginMessage"
+                );
+
+                return;
+            }
+
+
+            if (
+                currentProfile.role !==
+                selectedRole
+            ) {
+
+                await supabaseClient.auth
+                    .signOut();
+
+                currentUser = null;
+                currentProfile = null;
+
+                showMessage(
+                    "The selected account type does not match your account.",
+                    "error",
+                    "loginMessage"
+                );
+
+                return;
+            }
+
+
+            if (
+                currentProfile.role ===
+                "admin"
+            ) {
+
+                await showAdminDashboard();
+
+            } else {
+
+                await showOJTDashboard();
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   REGISTRATION
+========================================================= */
+
+document
+    .getElementById("registerForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const fullName =
+                document
+                    .getElementById("registerFullName")
+                    .value
+                    .trim();
+
+            const school =
+                document
+                    .getElementById("registerSchool")
+                    .value
+                    .trim();
+
+            const username =
+                document
+                    .getElementById("registerUsername")
+                    .value
+                    .trim();
+
+            const password =
+                document
+                    .getElementById("registerPassword")
+                    .value;
+
+            const confirmPassword =
+                document
+                    .getElementById("registerConfirmPassword")
+                    .value;
+
+
+            if (
+                password !==
+                confirmPassword
+            ) {
+
+                showMessage(
+                    "Passwords do not match.",
+                    "error",
+                    "registerMessage"
+                );
+
+                return;
+            }
+
+
+            const {
+                data: existingUser,
+                error: usernameError
+            } = await supabaseClient
+                .from("profiles")
+                .select("id")
+                .eq("username", username)
+                .maybeSingle();
+
+
+            if (usernameError) {
+
+                showMessage(
+                    usernameError.message,
+                    "error",
+                    "registerMessage"
+                );
+
+                return;
+            }
+
+
+            if (existingUser) {
+
+                showMessage(
+                    "Username is already taken.",
+                    "error",
+                    "registerMessage"
+                );
+
+                return;
+            }
+
+
+            const email =
+                usernameToEmail(username);
+
+
+            const {
+                data,
+                error
+            } = await supabaseClient.auth
+                .signUp({
+                    email: email,
+                    password: password
+                });
+
+
+            if (error) {
+
+                console.error(error);
+
+                showMessage(
+                    error.message,
+                    "error",
+                    "registerMessage"
+                );
+
+                return;
+            }
+
+
+            if (!data.user) {
+
+                showMessage(
+                    "Unable to create account.",
+                    "error",
+                    "registerMessage"
+                );
+
+                return;
+            }
+
+
+            const {
+                error: profileError
+            } = await supabaseClient
+                .from("profiles")
+                .insert({
+                    id: data.user.id,
+                    username: username,
+                    full_name: fullName,
+                    school: school,
+                    role: "ojt"
+                });
+
+
+            if (profileError) {
+
+                console.error(
+                    profileError
+                );
+
+                showMessage(
+                    "Account created, but profile creation failed: " +
+                    profileError.message,
+                    "error",
+                    "registerMessage"
+                );
+
+                return;
+            }
+
+
+            showMessage(
+                "Account created successfully. You can now log in.",
+                "success",
+                "registerMessage"
+            );
+
+
+            document
+                .getElementById("registerForm")
+                .reset();
+
+        }
+    );
+
+
+/* =========================================================
+   OJT DASHBOARD
+========================================================= */
+
+async function showOJTDashboard() {
+
+    document
+        .getElementById("loginPage")
+        .classList.add("hidden");
+
+    document
+        .getElementById("registerPage")
+        .classList.add("hidden");
+
+    document
+        .getElementById("adminDashboard")
+        .classList.add("hidden");
+
+    document
+        .getElementById("ojtDashboard")
+        .classList.remove("hidden");
+
+
+    document
+        .getElementById("ojtNavName")
+        .textContent =
+        currentProfile.full_name;
+
+
+    document
+        .getElementById("ojtWelcomeName")
+        .textContent =
+        currentProfile.full_name;
+
+
+    document
+        .getElementById("ojtProfileName")
+        .textContent =
+        currentProfile.full_name;
+
+
+    document
+        .getElementById("ojtProfileSchool")
+        .textContent =
+        currentProfile.school;
+
+
+    document
+        .getElementById("ojtProfileUsername")
+        .textContent =
+        currentProfile.username;
+
+
+    document
+        .getElementById("accomplishmentDate")
+        .value =
+        new Date()
+            .toISOString()
+            .split("T")[0];
+
+
+    await loadHistory();
+
+    await loadAllOJTReports();
+}
+
+
+/* =========================================================
+   PHOTO PREVIEW
+========================================================= */
+
+document
+    .getElementById("accomplishmentPhoto")
+    .addEventListener(
+        "change",
+        function() {
+
+            const file =
+                this.files[0];
+
+            if (!file) return;
+
+
+            if (
+                !file.type.startsWith(
+                    "image/"
+                )
+            ) {
+
+                showMessage(
+                    "Please select an image file.",
+                    "error"
+                );
+
+                this.value = "";
+
+                return;
+            }
+
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                function(event) {
+
+                    document
+                        .getElementById(
+                            "previewImage"
+                        )
+                        .src =
+                        event.target.result;
+
+                    document
+                        .getElementById(
+                            "photoPreview"
+                        )
+                        .classList
+                        .remove("hidden");
+
+                };
+
+
+            reader.readAsDataURL(file);
+
+        }
+    );
+
+
+function removePhoto() {
+
+    document
+        .getElementById(
+            "accomplishmentPhoto"
+        )
+        .value = "";
+
+    document
+        .getElementById(
+            "previewImage"
+        )
+        .src = "";
+
+    document
+        .getElementById(
+            "photoPreview"
+        )
+        .classList
+        .add("hidden");
+}
+
+
+/* =========================================================
+   CREATE SIGNED PHOTO URL
+========================================================= */
+
+async function createSignedURL(
+    photoPath
+) {
+
+    if (!photoPath) {
+        return null;
+    }
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .storage
+        .from("ojt-proofs")
+        .createSignedUrl(
+            photoPath,
+            3600
+        );
+
+
+    if (error) {
+
+        console.error(
+            "Signed URL error:",
+            error
+        );
+
+        return null;
+    }
+
+
+    return data?.signedUrl || null;
+}
+
+
+/* =========================================================
+   DOWNLOAD PHOTO
+========================================================= */
+
+async function downloadPhoto(
+    photoPath,
+    fileName = "accomplishment-photo"
+) {
+
+    if (!photoPath) {
+
+        showMessage(
+            "Photo is not available.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .storage
+        .from("ojt-proofs")
+        .createSignedUrl(
+            photoPath,
+            300,
+            {
+                download: fileName
+            }
+        );
+
+
+    if (error) {
+
+        console.error(
+            "Download error:",
+            error
+        );
+
+        showMessage(
+            "Unable to download photo.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if (data?.signedUrl) {
+
+        const link =
+            document.createElement(
+                "a"
+            );
+
+        link.href =
+            data.signedUrl;
+
+        link.download =
+            fileName;
+
+        link.target =
+            "_blank";
+
+        document
+            .body
+            .appendChild(link);
+
+        link.click();
+
+        link.remove();
+    }
+}
+
+
+/* =========================================================
+   SUBMIT ACCOMPLISHMENT
+========================================================= */
+
+document
+    .getElementById(
+        "accomplishmentForm"
+    )
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            if (!currentUser) {
+                return;
+            }
+
+
+            const date =
+                document
+                    .getElementById(
+                        "accomplishmentDate"
+                    )
+                    .value;
+
+            const period =
+                document
+                    .getElementById(
+                        "accomplishmentPeriod"
+                    )
+                    .value;
+
+            const description =
+                document
+                    .getElementById(
+                        "accomplishmentDescription"
+                    )
+                    .value
+                    .trim();
+
+            const photoInput =
+                document
+                    .getElementById(
+                        "accomplishmentPhoto"
+                    );
+
+
+            if (
+                !date ||
+                !period ||
+                !description ||
+                !photoInput.files.length
+            ) {
+
+                showMessage(
+                    "Please complete all required fields.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            const file =
+                photoInput.files[0];
+
+
+            if (
+                !file.type.startsWith(
+                    "image/"
+                )
+            ) {
+
+                showMessage(
+                    "Please upload an image.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            showMessage(
+                "Submitting accomplishment...",
+                "success"
+            );
+
+
+            const extension =
+                file.name
+                    .split(".")
+                    .pop()
+                    .toLowerCase();
+
+
+            const photoPath =
+                `${currentUser.id}/${date}_${period}_${Date.now()}.${extension}`;
+
+
+            const {
+                error: uploadError
+            } = await supabaseClient
+                .storage
+                .from("ojt-proofs")
+                .upload(
+                    photoPath,
+                    file,
+                    {
+                        cacheControl: "3600",
+                        upsert: false
+                    }
+                );
+
+
+            if (uploadError) {
+
+                console.error(
+                    uploadError
+                );
+
+                showMessage(
+                    "Photo upload failed: " +
+                    uploadError.message,
+                    "error"
+                );
+
+                return;
+            }
+
+
+            const {
+                error: insertError
+            } = await supabaseClient
+                .from("accomplishments")
+                .insert({
+                    user_id:
+                        currentUser.id,
+
+                    date:
+                        date,
+
+                    period:
+                        period,
+
+                    description:
+                        description,
+
+                    photo_url:
+                        photoPath
+                });
+
+
+            if (insertError) {
+
+                console.error(
+                    insertError
+                );
+
+
+                await supabaseClient
+                    .storage
+                    .from("ojt-proofs")
+                    .remove([
+                        photoPath
+                    ]);
+
+
+                if (
+                    insertError.code ===
+                    "23505"
+                ) {
+
+                    showMessage(
+                        "You already submitted an accomplishment for this session.",
+                        "error"
+                    );
+
+                } else {
+
+                    showMessage(
+                        "Unable to save accomplishment: " +
+                        insertError.message,
+                        "error"
+                    );
+                }
+
+
+                return;
+            }
+
+
+            showMessage(
+                "Accomplishment submitted successfully.",
+                "success"
+            );
+
+
+            document
+                .getElementById(
+                    "accomplishmentForm"
+                )
+                .reset();
+
+
+            document
+                .getElementById(
+                    "accomplishmentDate"
+                )
+                .value =
+                new Date()
+                    .toISOString()
+                    .split("T")[0];
+
+
+            removePhoto();
+
+
+            await loadHistory();
+
+            await loadAllOJTReports();
+
+        }
+    );
+
+
+/* =========================================================
+   FORMAT DATE
+========================================================= */
+
+function formatDate(dateString) {
+
+    if (!dateString) {
+        return "";
+    }
+
+
+    const date =
+        new Date(
+            dateString + "T00:00:00"
+        );
+
+
+    return date.toLocaleDateString(
+        "en-US",
+        {
+            month: "long",
+            day: "numeric",
+            year: "numeric"
+        }
+    );
+}
+
+
+/* =========================================================
+   FORMAT DATE/TIME
+========================================================= */
+
+function formatDateTime(
+    dateString
+) {
+
+    if (!dateString) {
+        return "";
+    }
+
+
+    return new Date(
+        dateString
+    ).toLocaleString(
+        "en-US",
+        {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "2-digit"
+        }
+    );
+}
+
+
+/* =========================================================
+   LOAD OJT HISTORY
+========================================================= */
+
+async function loadHistory() {
+
+    const container =
+        document.getElementById(
+            "historyContainer"
+        );
+
+
+    if (!currentUser) return;
+
+
+    container.innerHTML = `
+        <div class="loading">
+            Loading history...
+        </div>
+    `;
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("accomplishments")
+        .select("*")
+        .eq(
+            "user_id",
+            currentUser.id
+        )
+        .order(
+            "date",
+            {
+                ascending: false
+            }
+        )
+        .order(
+            "submitted_at",
+            {
+                ascending: false
+            }
+        )
+        .limit(30);
+
+
+    if (error) {
+
+        console.error(error);
+
+        container.innerHTML = `
+            <div class="empty-state">
+                Unable to load history.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    if (
+        !data ||
+        data.length === 0
+    ) {
+
+        container.innerHTML = `
+            <div class="empty-state">
+                No accomplishment records yet.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    container.innerHTML = "";
+
+
+    for (const record of data) {
+
+        const imageURL =
+            await createSignedURL(
+                record.photo_url
+            );
+
+
+        const item =
+            document.createElement(
+                "div"
+            );
+
+        item.className =
+            "history-item";
+
+
+        item.innerHTML = `
+
+            <div class="history-header">
+
+                <div>
+                    <strong>
+                        ${escapeHTML(
+                            formatDate(
+                                record.date
+                            )
+                        )}
+                    </strong>
+
+                    <span class="${
+                        record.period === "am"
+                            ? "history-am"
+                            : "history-pm"
+                    }">
+                        ${record.period.toUpperCase()}
+                    </span>
+                </div>
+
+                <small>
+                    Submitted:
+                    ${escapeHTML(
+                        formatDateTime(
+                            record.submitted_at
+                        )
+                    )}
+                </small>
+
+            </div>
+
+
+            <div class="history-body">
+
+                <div class="history-photo-wrapper">
+
+                    ${
+                        imageURL
+                        ?
+                        `
+                            <img
+                                src="${imageURL}"
+                                class="history-photo"
+                                alt="Proof photo"
+                            >
+
+                            <button
+                                type="button"
+                                class="download-photo-button"
+                                onclick="downloadPhoto(
+                                    '${escapeHTML(
+                                        record.photo_url
+                                    )}',
+                                    'accomplishment-${record.date}-${record.period}.jpg'
+                                )"
+                            >
+                                ⬇ Download
+                            </button>
+                        `
+                        :
+                        `
+                            <div class="report-no-photo">
+                                📷
+                            </div>
+                        `
+                    }
+
+                </div>
+
+
+                <div class="history-description">
+
+                    <strong>
+                        ACCOMPLISHMENT
+                    </strong>
+
+                    <p>
+                        ${escapeHTML(
+                            record.description
+                        )}
+                    </p>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        container.appendChild(
+            item
+        );
+    }
+}
+
+
+/* =========================================================
+   LOAD ALL OJT REPORTS
+========================================================= */
+
+async function loadAllOJTReports() {
+
+    const container =
+        document.getElementById(
+            "ojtReportsContainer"
+        );
+
+    const count =
+        document.getElementById(
+            "ojtReportCount"
+        );
+
+
+    if (!currentUser) return;
+
+
+    container.innerHTML = `
+        <div class="report-loading">
+            Loading reports...
+        </div>
+    `;
+
+    count.textContent = "";
+
+
+    const dateFilter =
+        document
+            .getElementById(
+                "ojtReportDateFilter"
+            )
+            .value;
+
+
+    let query =
+        supabaseClient
+            .from("accomplishments")
+            .select("*")
+            .eq(
+                "user_id",
+                currentUser.id
+            )
+            .order(
+                "date",
+                {
+                    ascending: false
+                }
+            )
+            .order(
+                "submitted_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+    if (dateFilter) {
+
+        query =
+            query.eq(
+                "date",
+                dateFilter
+            );
+    }
+
+
+    const {
+        data,
+        error
+    } = await query;
+
+
+    if (error) {
+
+        console.error(
+            "OJT reports error:",
+            error
+        );
+
+
+        container.innerHTML = `
+            <div class="report-empty">
+                Unable to load reports.<br>
+                ${escapeHTML(
+                    error.message
+                )}
+            </div>
+        `;
+
+        return;
+    }
+
+
+    if (
+        !data ||
+        data.length === 0
+    ) {
+
+        count.textContent =
+            "0 accomplishment reports";
+
+
+        container.innerHTML = `
+            <div class="report-empty">
+                📋<br><br>
+                No accomplishment reports found.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    count.textContent =
+        data.length +
+        " accomplishment report" +
+        (
+            data.length !== 1
+                ? "s"
+                : ""
+        );
+
+
+    container.innerHTML = "";
+
+
+    for (const record of data) {
+
+        const imageURL =
+            await createSignedURL(
+                record.photo_url
+            );
+
+
+        const item =
+            document.createElement(
+                "div"
+            );
+
+        item.className =
+            "report-item";
+
+
+        const periodClass =
+            record.period === "am"
+                ? "history-am"
+                : "history-pm";
+
+
+        item.innerHTML = `
+
+            <div class="report-header">
+
+                <div class="report-person">
+
+                    <strong>
+                        ${escapeHTML(
+                            currentProfile.full_name
+                        )}
+                    </strong>
+
+                    <span>
+                        ${escapeHTML(
+                            currentProfile.school
+                        )}
+                    </span>
+
+                    <span>
+                        Username:
+                        ${escapeHTML(
+                            currentProfile.username
+                        )}
+                    </span>
+
+                </div>
+
+
+                <div class="report-date">
+
+                    <strong>
+                        ${escapeHTML(
+                            formatDate(
+                                record.date
+                            )
+                        )}
+                    </strong>
+
+                    <span class="${periodClass}">
+                        ${record.period.toUpperCase()}
+                    </span>
+
+                    <small>
+                        Submitted:
+                        ${escapeHTML(
+                            formatDateTime(
+                                record.submitted_at
+                            )
+                        )}
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="report-content">
+
+                <div>
+
+                    ${
+                        imageURL
+                        ?
+                        `
+                            <img
+                                src="${imageURL}"
+                                class="report-photo"
+                                alt="Proof of accomplishment"
+                            >
+
+                            <button
+                                type="button"
+                                class="download-photo-button"
+                                onclick="downloadPhoto(
+                                    '${escapeHTML(
+                                        record.photo_url
+                                    )}',
+                                    'accomplishment-${record.date}-${record.period}.jpg'
+                                )"
+                            >
+                                ⬇ Download Photo
+                            </button>
+                        `
+                        :
+                        `
+                            <div class="report-no-photo">
+                                📷
+                            </div>
+                        `
+                    }
+
+                </div>
+
+
+                <div class="report-description">
+
+                    <strong>
+                        ACCOMPLISHMENT
+                    </strong>
+
+                    <div class="report-description-text">
+                        ${escapeHTML(
+                            record.description
+                        )}
+                    </div>
+
+
+                    <div class="report-actions">
+
+                        <button
+                            type="button"
+                            class="report-edit-button"
+                            onclick="openEditAccomplishment(
+                                '${record.id}'
+                            )"
+                        >
+                            ✏ Edit Entry
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        container.appendChild(
+            item
+        );
+    }
+}
+
+
+/* =========================================================
+   CLEAR OJT REPORT FILTER
+========================================================= */
+
+function clearOJTReportFilter() {
+
+    document
+        .getElementById(
+            "ojtReportDateFilter"
+        )
+        .value = "";
+
+
+    loadAllOJTReports();
+}
+
+
+/* =========================================================
+   OPEN EDIT MODAL
+========================================================= */
+
+async function openEditAccomplishment(
+    id
+) {
+
+    if (!currentUser) return;
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("accomplishments")
+        .select("*")
+        .eq("id", id)
+        .eq(
+            "user_id",
+            currentUser.id
+        )
+        .single();
+
+
+    if (error || !data) {
+
+        console.error(
+            error
+        );
+
+        showMessage(
+            "Unable to load this accomplishment.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    document
+        .getElementById(
+            "editAccomplishmentId"
+        )
+        .value =
+        data.id;
+
+
+    document
+        .getElementById(
+            "editDescription"
+        )
+        .value =
+        data.description || "";
+
+
+    document
+        .getElementById(
+            "editAccomplishmentDate"
+        )
+        .textContent =
+        formatDate(
+            data.date
+        );
+
+
+    document
+        .getElementById(
+            "editAccomplishmentPeriod"
+        )
+        .textContent =
+        data.period.toUpperCase();
+
+
+    const photoContainer =
+        document
+            .getElementById(
+                "editCurrentPhoto"
+            );
+
+
+    const imageURL =
+        await createSignedURL(
+            data.photo_url
+        );
+
+
+    if (imageURL) {
+
+        photoContainer.innerHTML = `
+
+            <img
+                src="${imageURL}"
+                class="edit-current-photo"
+                alt="Current proof photo"
+            >
+
+            <button
+                type="button"
+                class="download-photo-button"
+                onclick="downloadPhoto(
+                    '${escapeHTML(
+                        data.photo_url
+                    )}',
+                    'current-${data.date}-${data.period}.jpg'
+                )"
+            >
+                ⬇ Download Current Photo
+            </button>
+
+        `;
+
+    } else {
+
+        photoContainer.innerHTML = `
+            <div class="report-no-photo">
+                📷
+            </div>
+        `;
+    }
+
+
+    document
+        .getElementById(
+            "editPhoto"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "editMessage"
+        )
+        .textContent = "";
+
+
+    document
+        .getElementById(
+            "editAccomplishmentModal"
+        )
+        .classList
+        .add("active");
+}
+
+
+/* =========================================================
+   CLOSE EDIT MODAL
+========================================================= */
+
+function closeEditAccomplishment() {
+
+    document
+        .getElementById(
+            "editAccomplishmentModal"
+        )
+        .classList
+        .remove("active");
+
+
+    document
+        .getElementById(
+            "editAccomplishmentId"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "editDescription"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "editPhoto"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "editCurrentPhoto"
+        )
+        .innerHTML = "";
+
+
+    document
+        .getElementById(
+            "editMessage"
+        )
+        .textContent = "";
+}
+
+
+/* =========================================================
+   SAVE EDITED ACCOMPLISHMENT
+========================================================= */
+
+async function saveEditedAccomplishment() {
+
+    if (!currentUser) return;
+
+
+    const id =
+        document
+            .getElementById(
+                "editAccomplishmentId"
+            )
+            .value;
+
+
+    const description =
+        document
+            .getElementById(
+                "editDescription"
+            )
+            .value
+            .trim();
+
+
+    const photoInput =
+        document
+            .getElementById(
+                "editPhoto"
+            );
+
+
+    if (!description) {
+
+        showMessage(
+            "Please enter an accomplishment description.",
+            "error",
+            "editMessage"
+        );
+
+        return;
+    }
+
+
+    const {
+        data: existing,
+        error: existingError
+    } = await supabaseClient
+        .from("accomplishments")
+        .select("*")
+        .eq("id", id)
+        .eq(
+            "user_id",
+            currentUser.id
+        )
+        .single();
+
+
+    if (
+        existingError ||
+        !existing
+    ) {
+
+        console.error(
+            existingError
+        );
+
+        showMessage(
+            "Unable to find the accomplishment.",
+            "error",
+            "editMessage"
+        );
+
+        return;
+    }
+
+
+    let newPhotoPath =
+        existing.photo_url;
+
+
+    /* =============================================
+       UPLOAD NEW PHOTO IF SELECTED
+    ============================================= */
+
+    if (
+        photoInput.files.length > 0
+    ) {
+
+        const file =
+            photoInput.files[0];
+
+
+        if (
+            !file.type.startsWith(
+                "image/"
+            )
+        ) {
+
+            showMessage(
+                "Please select an image file.",
+                "error",
+                "editMessage"
+            );
+
+            return;
+        }
+
+
+        const extension =
+            file.name
+                .split(".")
+                .pop()
+                .toLowerCase();
+
+
+        newPhotoPath =
+            `${currentUser.id}/${existing.date}_${existing.period}_${Date.now()}.${extension}`;
+
+
+        const {
+            error: uploadError
+        } = await supabaseClient
+            .storage
+            .from("ojt-proofs")
+            .upload(
+                newPhotoPath,
+                file,
+                {
+                    cacheControl: "3600",
+                    upsert: false
+                }
+            );
+
+
+        if (uploadError) {
+
+            console.error(
+                uploadError
+            );
+
+            showMessage(
+                "Unable to upload the new photo: " +
+                uploadError.message,
+                "error",
+                "editMessage"
+            );
+
+            return;
+        }
+    }
+
+
+    /* =============================================
+       UPDATE DATABASE
+    ============================================= */
+
+    const {
+        error: updateError
+    } = await supabaseClient
+        .from("accomplishments")
+        .update({
+            description:
+                description,
+
+            photo_url:
+                newPhotoPath
+        })
+        .eq(
+            "id",
+            id
+        )
+        .eq(
+            "user_id",
+            currentUser.id
+        );
+
+
+    if (updateError) {
+
+        console.error(
+            updateError
+        );
+
+
+        /*
+            If the database update failed,
+            delete the newly uploaded photo.
+        */
+
+        if (
+            photoInput.files.length > 0 &&
+            newPhotoPath !==
+                existing.photo_url
+        ) {
+
+            await supabaseClient
+                .storage
+                .from("ojt-proofs")
+                .remove([
+                    newPhotoPath
+                ]);
+        }
+
+
+        showMessage(
+            "Unable to save your changes: " +
+            updateError.message,
+            "error",
+            "editMessage"
+        );
+
+        return;
+    }
+
+
+    closeEditAccomplishment();
+
+
+    showMessage(
+        "Accomplishment updated successfully.",
+        "success"
+    );
+
+
+    await loadHistory();
+
+    await loadAllOJTReports();
+}
+
+
+/* =========================================================
+   ADMIN DASHBOARD
+========================================================= */
+
+async function showAdminDashboard() {
+
+    document
+        .getElementById(
+            "loginPage"
+        )
+        .classList
+        .add("hidden");
+
+
+    document
+        .getElementById(
+            "registerPage"
+        )
+        .classList
+        .add("hidden");
+
+
+    document
+        .getElementById(
+            "ojtDashboard"
+        )
+        .classList
+        .add("hidden");
+
+
+    document
+        .getElementById(
+            "adminDashboard"
+        )
+        .classList
+        .remove("hidden");
+
+
+    calendarMonth =
+        new Date();
+
+
+    selectedAdminDate =
+        new Date();
+
+
+    renderCalendar();
+
+    await loadCalendarDates();
+
+
+    const dateString =
+        getLocalDateString(
+            selectedAdminDate
+        );
+
+
+    await loadAdminRecords(
+        dateString
+    );
+
+
+    await loadAllAdminReports();
+
+    await loadAdminEditHistory();
+}
+
+
+/* =========================================================
+   LOCAL DATE STRING
+========================================================= */
+
+function getLocalDateString(
+    date
+) {
+
+    const year =
+        date.getFullYear();
+
+    const month =
+        String(
+            date.getMonth() + 1
+        ).padStart(
+            2,
+            "0"
+        );
+
+    const day =
+        String(
+            date.getDate()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    return `${year}-${month}-${day}`;
+}
+
+
+/* =========================================================
+   CALENDAR
+========================================================= */
+
+async function loadCalendarDates() {
+
+    const firstDay =
+        new Date(
+            calendarMonth.getFullYear(),
+            calendarMonth.getMonth(),
+            1
+        );
+
+
+    const lastDay =
+        new Date(
+            calendarMonth.getFullYear(),
+            calendarMonth.getMonth() + 1,
+            0
+        );
+
+
+    const start =
+        getLocalDateString(
+            firstDay
+        );
+
+    const end =
+        getLocalDateString(
+            lastDay
+        );
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("accomplishments")
+        .select("date")
+        .gte("date", start)
+        .lte("date", end);
+
+
+    if (error) {
+
+        console.error(
+            error
+        );
+
+        return;
+    }
+
+
+    const dates =
+        new Set(
+            (data || [])
+                .map(
+                    record =>
+                        record.date
+                )
+        );
+
+
+    renderCalendar(
+        dates
+    );
+}
+
+
+function renderCalendar(
+    accomplishmentDates = new Set()
+) {
+
+    const grid =
+        document.getElementById(
+            "calendarGrid"
+        );
+
+
+    const title =
+        document.getElementById(
+            "calendarMonth"
+        );
+
+
+    const year =
+        calendarMonth.getFullYear();
+
+    const month =
+        calendarMonth.getMonth();
+
+
+    title.textContent =
+        calendarMonth.toLocaleDateString(
+            "en-US",
+            {
+                month: "long",
+                year: "numeric"
+            }
+        );
+
+
+    grid.innerHTML = "";
+
+
+    const firstDay =
+        new Date(
+            year,
+            month,
+            1
+        ).getDay();
+
+
+    const daysInMonth =
+        new Date(
+            year,
+            month + 1,
+            0
+        ).getDate();
+
+
+    for (
+        let i = 0;
+        i < firstDay;
+        i++
+    ) {
+
+        const blank =
+            document.createElement(
+                "div"
+            );
+
+        blank.className =
+            "calendar-day empty";
+
+
+        grid.appendChild(
+            blank
+        );
+    }
+
+
+    for (
+        let day = 1;
+        day <= daysInMonth;
+        day++
+    ) {
+
+        const date =
+            new Date(
+                year,
+                month,
+                day
+            );
+
+
+        const dateString =
+            getLocalDateString(
+                date
+            );
+
+
+        const cell =
+            document.createElement(
+                "button"
+            );
+
+
+        cell.type =
+            "button";
+
+
+        cell.className =
+            "calendar-day";
+
+
+        if (
+            accomplishmentDates.has(
+                dateString
+            )
+        ) {
+
+            cell.classList.add(
+                "has-record"
+            );
+        }
+
+
+        if (
+            dateString ===
+            getLocalDateString(
+                selectedAdminDate
+            )
+        ) {
+
+            cell.classList.add(
+                "selected"
+            );
+        }
+
+
+        cell.innerHTML = `
+            <span>
+                ${day}
+            </span>
+
+            ${
+                accomplishmentDates.has(
+                    dateString
+                )
+                ?
+                `<i></i>`
+                :
+                ""
+            }
+        `;
+
+
+        cell.onclick =
+            async function() {
+
+                selectedAdminDate =
+                    date;
+
+
+                renderCalendar(
+                    accomplishmentDates
+                );
+
+
+                await loadAdminRecords(
+                    dateString
+                );
+
+            };
+
+
+        grid.appendChild(
+            cell
+        );
+    }
+}
+
+
+/* =========================================================
+   CHANGE MONTH
+========================================================= */
+
+async function changeMonth(
+    amount
+) {
+
+    calendarMonth.setMonth(
+        calendarMonth.getMonth() +
+        amount
+    );
+
+
+    await loadCalendarDates();
+}
+
+
+/* =========================================================
+   LOAD ADMIN DAILY RECORDS
+========================================================= */
+
+async function loadAdminRecords(
+    date
+) {
+
+    const title =
+        document.getElementById(
+            "selectedDateTitle"
+        );
+
+
+    const container =
+        document.getElementById(
+            "adminRecordsContainer"
+        );
+
+
+    title.textContent =
+        formatDate(
+            date
+        );
+
+
+    container.innerHTML = `
+        <div class="loading">
+            Loading records...
+        </div>
+    `;
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("accomplishments")
+        .select(`
+            id,
+            user_id,
+            date,
+            period,
+            description,
+            photo_url,
+            submitted_at,
+            profiles (
+                username,
+                full_name,
+                school
+            )
+        `)
+        .eq(
+            "date",
+            date
+        )
+        .order(
+            "period",
+            {
+                ascending: true
+            }
+        );
+
+
+    if (error) {
+
+        console.error(
+            error
+        );
+
+
+        container.innerHTML = `
+            <div class="empty-state">
+                Unable to load records.<br>
+                ${escapeHTML(
+                    error.message
+                )}
+            </div>
+        `;
+
+        return;
+    }
+
+
+    if (
+        !data ||
+        data.length === 0
+    ) {
+
+        container.innerHTML = `
+            <div class="empty-state">
+                No accomplishment records for this date.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    container.innerHTML = "";
+
+
+    for (const record of data) {
+
+        const profile =
+            record.profiles || {};
+
+
+        const imageURL =
+            await createSignedURL(
+                record.photo_url
+            );
+
+
+        const item =
+            document.createElement(
+                "div"
+            );
+
+
+        item.className =
+            "admin-record";
+
+
+        item.innerHTML = `
+
+            <div class="admin-record-header">
+
+                <div>
+
+                    <strong>
+                        ${escapeHTML(
+                            profile.full_name ||
+                            "Unknown OJT"
+                        )}
+                    </strong>
+
+                    <span>
+                        ${escapeHTML(
+                            profile.school ||
+                            "No school"
+                        )}
+                    </span>
+
+                    <span>
+                        Username:
+                        ${escapeHTML(
+                            profile.username ||
+                            ""
+                        )}
+                    </span>
+
+                </div>
+
+
+                <span class="${
+                    record.period === "am"
+                        ? "history-am"
+                        : "history-pm"
+                }">
+                    ${record.period.toUpperCase()}
+                </span>
+
+            </div>
+
+
+            <div class="admin-record-content">
+
+                <div>
+
+                    ${
+                        imageURL
+                        ?
+                        `
+                            <img
+                                src="${imageURL}"
+                                class="admin-record-photo"
+                                alt="Proof of accomplishment"
+                            >
+
+                            <button
+                                type="button"
+                                class="download-photo-button"
+                                onclick="downloadPhoto(
+                                    '${escapeHTML(
+                                        record.photo_url
+                                    )}',
+                                    '${escapeHTML(
+                                        profile.username ||
+                                        "ojt"
+                                    )}-${record.date}-${record.period}.jpg'
+                                )"
+                            >
+                                ⬇ Download Photo
+                            </button>
+                        `
+                        :
+                        `
+                            <div class="report-no-photo">
+                                📷
+                            </div>
+                        `
+                    }
+
+                </div>
+
+
+                <div class="admin-record-description">
+
+                    <strong>
+                        ACCOMPLISHMENT
+                    </strong>
+
+                    <p>
+                        ${escapeHTML(
+                            record.description
+                        )}
+                    </p>
+
+                    <small>
+                        Submitted:
+                        ${escapeHTML(
+                            formatDateTime(
+                                record.submitted_at
+                            )
+                        )}
+                    </small>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        container.appendChild(
+            item
+        );
+    }
+}
+
+
+/* =========================================================
+   LOAD ALL ADMIN REPORTS
+========================================================= */
+
+async function loadAllAdminReports() {
+
+    const container =
+        document.getElementById(
+            "adminReportsContainer"
+        );
+
+
+    const count =
+        document.getElementById(
+            "adminReportCount"
+        );
+
+
+    if (!currentUser) return;
+
+
+    container.innerHTML = `
+        <div class="report-loading">
+            Loading reports...
+        </div>
+    `;
+
+
+    count.textContent = "";
+
+
+    const search =
+        document
+            .getElementById(
+                "adminReportSearch"
+            )
+            .value
+            .trim()
+            .toLowerCase();
+
+
+    const date =
+        document
+            .getElementById(
+                "adminReportDate"
+            )
+            .value;
+
+
+    const period =
+        document
+            .getElementById(
+                "adminReportPeriod"
+            )
+            .value;
+
+
+    let query =
+        supabaseClient
+            .from("accomplishments")
+            .select(`
+                id,
+                user_id,
+                date,
+                period,
+                description,
+                photo_url,
+                submitted_at,
+                profiles (
+                    username,
+                    full_name,
+                    school
+                )
+            `)
+            .order(
+                "date",
+                {
+                    ascending: false
+                }
+            )
+            .order(
+                "submitted_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+    if (date) {
+
+        query =
+            query.eq(
+                "date",
+                date
+            );
+    }
+
+
+    if (period) {
+
+        query =
+            query.eq(
+                "period",
+                period
+            );
+    }
+
+
+    const {
+        data,
+        error
+    } = await query;
+
+
+    if (error) {
+
+        console.error(
+            "Admin reports error:",
+            error
+        );
+
+
+        container.innerHTML = `
+            <div class="report-empty">
+                Unable to load reports.<br>
+                ${escapeHTML(
+                    error.message
+                )}
+            </div>
+        `;
+
+        return;
+    }
+
+
+    let reports =
+        data || [];
+
+
+    if (search) {
+
+        reports =
+            reports.filter(
+                record => {
+
+                    const profile =
+                        record.profiles ||
+                        {};
+
+
+                    const name =
+                        (
+                            profile.full_name ||
+                            ""
+                        )
+                        .toLowerCase();
+
+
+                    const school =
+                        (
+                            profile.school ||
+                            ""
+                        )
+                        .toLowerCase();
+
+
+                    const username =
+                        (
+                            profile.username ||
+                            ""
+                        )
+                        .toLowerCase();
+
+
+                    return (
+                        name.includes(
+                            search
+                        ) ||
+                        school.includes(
+                            search
+                        ) ||
+                        username.includes(
+                            search
+                        )
+                    );
+
+                }
+            );
+    }
+
+
+    if (
+        reports.length === 0
+    ) {
+
+        count.textContent =
+            "0 accomplishment reports";
+
+
+        container.innerHTML = `
+            <div class="report-empty">
+                📋<br><br>
+                No accomplishment reports found.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    count.textContent =
+        reports.length +
+        " accomplishment report" +
+        (
+            reports.length !== 1
+                ? "s"
+                : ""
+        );
+
+
+    container.innerHTML = "";
+
+
+    for (
+        const record of reports
+    ) {
+
+        const profile =
+            record.profiles ||
+            {};
+
+
+        const imageURL =
+            await createSignedURL(
+                record.photo_url
+            );
+
+
+        const item =
+            document.createElement(
+                "div"
+            );
+
+
+        item.className =
+            "report-item";
+
+
+        const periodClass =
+            record.period === "am"
+                ? "history-am"
+                : "history-pm";
+
+
+        item.innerHTML = `
+
+            <div class="report-header">
+
+                <div class="report-person">
+
+                    <strong>
+                        ${escapeHTML(
+                            profile.full_name ||
+                            "Unknown OJT"
+                        )}
+                    </strong>
+
+                    <span>
+                        ${escapeHTML(
+                            profile.school ||
+                            "No school"
+                        )}
+                    </span>
+
+                    <span>
+                        Username:
+                        ${escapeHTML(
+                            profile.username ||
+                            ""
+                        )}
+                    </span>
+
+                </div>
+
+
+                <div class="report-date">
+
+                    <strong>
+                        ${escapeHTML(
+                            formatDate(
+                                record.date
+                            )
+                        )}
+                    </strong>
+
+                    <span class="${periodClass}">
+                        ${record.period.toUpperCase()}
+                    </span>
+
+                    <small>
+                        Submitted:
+                        ${escapeHTML(
+                            formatDateTime(
+                                record.submitted_at
+                            )
+                        )}
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="report-content">
+
+                <div>
+
+                    ${
+                        imageURL
+                        ?
+                        `
+                            <img
+                                src="${imageURL}"
+                                class="report-photo"
+                                alt="Proof of accomplishment"
+                            >
+
+                            <button
+                                type="button"
+                                class="download-photo-button"
+                                onclick="downloadPhoto(
+                                    '${escapeHTML(
+                                        record.photo_url
+                                    )}',
+                                    '${escapeHTML(
+                                        profile.username ||
+                                        "ojt"
+                                    )}-${record.date}-${record.period}.jpg'
+                                )"
+                            >
+                                ⬇ Download Photo
+                            </button>
+                        `
+                        :
+                        `
+                            <div class="report-no-photo">
+                                📷
+                            </div>
+                        `
+                    }
+
+                </div>
+
+
+                <div class="report-description">
+
+                    <strong>
+                        ACCOMPLISHMENT
+                    </strong>
+
+                    <div class="report-description-text">
+                        ${escapeHTML(
+                            record.description
+                        )}
+                    </div>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        container.appendChild(
+            item
+        );
+    }
+}
+
+
+/* =========================================================
+   CLEAR ADMIN REPORT FILTERS
+========================================================= */
+
+function clearAdminReportFilters() {
+
+    document
+        .getElementById(
+            "adminReportSearch"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "adminReportDate"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "adminReportPeriod"
+        )
+        .value = "";
+
+
+    loadAllAdminReports();
+}
+
+
+/* =========================================================
+   ADMIN EDIT HISTORY
+========================================================= */
+
+async function loadAdminEditHistory() {
+
+    const container =
+        document.getElementById(
+            "adminEditHistoryContainer"
+        );
+
+
+    const count =
+        document.getElementById(
+            "adminEditHistoryCount"
+        );
+
+
+    if (!currentUser) return;
+
+
+    container.innerHTML = `
+        <div class="report-loading">
+            Loading edit history...
+        </div>
+    `;
+
+
+    count.textContent = "";
+
+
+    const search =
+        document
+            .getElementById(
+                "adminEditSearch"
+            )
+            .value
+            .trim()
+            .toLowerCase();
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("accomplishment_edits")
+        .select(`
+            id,
+            accomplishment_id,
+            user_id,
+            old_description,
+            new_description,
+            old_photo_url,
+            new_photo_url,
+            edited_at,
+            profiles (
+                username,
+                full_name,
+                school
+            )
+        `)
+        .order(
+            "edited_at",
+            {
+                ascending: false
+            }
+        );
+
+
+    if (error) {
+
+        console.error(
+            "Edit history error:",
+            error
+        );
+
+
+        container.innerHTML = `
+            <div class="report-empty">
+                Unable to load edit history.<br>
+                ${escapeHTML(
+                    error.message
+                )}
+            </div>
+        `;
+
+        return;
+    }
+
+
+    let records =
+        data || [];
+
+
+    if (search) {
+
+        records =
+            records.filter(
+                record => {
+
+                    const profile =
+                        record.profiles ||
+                        {};
+
+
+                    const name =
+                        (
+                            profile.full_name ||
+                            ""
+                        )
+                        .toLowerCase();
+
+
+                    const username =
+                        (
+                            profile.username ||
+                            ""
+                        )
+                        .toLowerCase();
+
+
+                    const school =
+                        (
+                            profile.school ||
+                            ""
+                        )
+                        .toLowerCase();
+
+
+                    return (
+                        name.includes(
+                            search
+                        ) ||
+                        username.includes(
+                            search
+                        ) ||
+                        school.includes(
+                            search
+                        )
+                    );
+
+                }
+            );
+    }
+
+
+    if (
+        records.length === 0
+    ) {
+
+        count.textContent =
+            "0 edit records";
+
+
+        container.innerHTML = `
+            <div class="report-empty">
+                📝<br><br>
+                No edited accomplishments found.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    count.textContent =
+        records.length +
+        " edit record" +
+        (
+            records.length !== 1
+                ? "s"
+                : ""
+        );
+
+
+    container.innerHTML = "";
+
+
+    for (
+        const record of records
+    ) {
+
+        const profile =
+            record.profiles ||
+            {};
+
+
+        const oldPhotoURL =
+            record.old_photo_url
+                ?
+                await createSignedURL(
+                    record.old_photo_url
+                )
+                :
+                null;
+
+
+        const newPhotoURL =
+            record.new_photo_url
+                ?
+                await createSignedURL(
+                    record.new_photo_url
+                )
+                :
+                null;
+
+
+        const item =
+            document.createElement(
+                "div"
+            );
+
+
+        item.className =
+            "edit-history-item";
+
+
+        item.innerHTML = `
+
+            <div class="edit-history-header">
+
+                <div>
+
+                    <strong>
+                        ${escapeHTML(
+                            profile.full_name ||
+                            "Unknown OJT"
+                        )}
+                    </strong>
+
+                    <span>
+                        ${escapeHTML(
+                            profile.school ||
+                            "No school"
+                        )}
+                    </span>
+
+                    <span>
+                        Username:
+                        ${escapeHTML(
+                            profile.username ||
+                            ""
+                        )}
+                    </span>
+
+                </div>
+
+
+                <div class="edit-history-date">
+
+                    Edited:
+                    ${escapeHTML(
+                        formatDateTime(
+                            record.edited_at
+                        )
+                    )}
+
+                </div>
+
+            </div>
+
+
+            <div class="edit-comparison">
+
+
+                <!-- ORIGINAL -->
+
+                <div class="edit-column">
+
+                    <div class="edit-column-title">
+                        ORIGINAL ENTRY
+                    </div>
+
+
+                    <div class="edit-description">
+
+                        ${escapeHTML(
+                            record.old_description ||
+                            ""
+                        )}
+
+                    </div>
+
+
+                    ${
+                        oldPhotoURL
+                        ?
+                        `
+                            <img
+                                src="${oldPhotoURL}"
+                                class="edit-history-photo"
+                                alt="Original proof photo"
+                            >
+
+                            <button
+                                type="button"
+                                class="download-photo-button"
+                                onclick="downloadPhoto(
+                                    '${escapeHTML(
+                                        record.old_photo_url
+                                    )}',
+                                    'original-photo-${record.id}.jpg'
+                                )"
+                            >
+                                ⬇ Download Original Photo
+                            </button>
+                        `
+                        :
+                        `
+                            <div class="report-no-photo">
+                                📷
+                            </div>
+                        `
+                    }
+
+                </div>
+
+
+                <!-- ARROW -->
+
+                <div class="edit-arrow">
+                    →
+                </div>
+
+
+                <!-- EDITED -->
+
+                <div class="edit-column">
+
+                    <div class="edit-column-title">
+                        EDITED ENTRY
+                    </div>
+
+
+                    <div class="edit-description">
+
+                        ${escapeHTML(
+                            record.new_description ||
+                            ""
+                        )}
+
+                    </div>
+
+
+                    ${
+                        newPhotoURL
+                        ?
+                        `
+                            <img
+                                src="${newPhotoURL}"
+                                class="edit-history-photo"
+                                alt="Edited proof photo"
+                            >
+
+                            <button
+                                type="button"
+                                class="download-photo-button"
+                                onclick="downloadPhoto(
+                                    '${escapeHTML(
+                                        record.new_photo_url
+                                    )}',
+                                    'edited-photo-${record.id}.jpg'
+                                )"
+                            >
+                                ⬇ Download Edited Photo
+                            </button>
+                        `
+                        :
+                        `
+                            <div class="report-no-photo">
+                                📷
+                            </div>
+                        `
+                    }
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        container.appendChild(
+            item
+        );
+    }
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+async function logout() {
+
+    await supabaseClient.auth
+        .signOut();
+
+
+    currentUser = null;
+    currentProfile = null;
+
+
+    showLoginPage();
+
+
+    document
+        .getElementById(
+            "loginForm"
+        )
+        .reset();
+}
+
+
+/* =========================================================
+   CHECK EXISTING SESSION
+========================================================= */
+
+async function loadExistingSession() {
+
+    const {
+        data
+    } = await supabaseClient
+        .auth
+        .getSession();
+
+
+    if (
+        data &&
+        data.session &&
+        data.session.user
+    ) {
+
+        currentUser =
+            data.session.user;
+
+
+        currentProfile =
+            await getProfile(
+                currentUser.id
+            );
+
+
+        if (
+            currentProfile &&
+            currentProfile.role ===
+            "admin"
+        ) {
+
+            await showAdminDashboard();
+
+        } else if (
+            currentProfile
+        ) {
+
+            await showOJTDashboard();
+
+        } else {
+
+            await logout();
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   CLOSE MODAL WHEN CLICKING OUTSIDE
+========================================================= */
+
+document
+    .getElementById(
+        "editAccomplishmentModal"
+    )
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target === this
+            ) {
+
+                closeEditAccomplishment();
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   START APPLICATION
+========================================================= */
+
+loadExistingSession();
+
+</script>
+
+</body>
+</html>
